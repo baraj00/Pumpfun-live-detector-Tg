@@ -3,7 +3,7 @@ const { Telegraf } = require('telegraf');
 const fetch = require('node-fetch'); // Node <18
 const { PublicKey } = require('@solana/web3.js');
 
-const BOT_TOKEN = '8277427018:AAEwNdC956bbyjuPGqo8uHvPKpKnlTq5ogs'; // <-- Mets ton token ici
+const BOT_TOKEN = ' METS TON TOKEN ICI '; // <-- Mets ton token ici
 const bot = new Telegraf(BOT_TOKEN);
 
 const PUMPFUN_TEMPLATE = 'https://pump.fun/coin/{address}';
