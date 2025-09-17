@@ -1,0 +1,11 @@
+{
+  "name": "bot-pumpfun",
+  "version": "1.0.0",
+  "main": "bot-pumpfun.js",
+  "type": "commonjs",
+  "dependencies": {
+    "telegraf": "^4.12.2",
+    "node-fetch": "^2.6.7",
+    "@solana/web3.js": "^1.95.2"
+  }
+}
