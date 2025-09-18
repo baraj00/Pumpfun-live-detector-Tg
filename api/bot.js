@@ -34,7 +34,21 @@ const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
 
 bot.on('message', async (ctx) => {
   try {
-    const text = ctx.message.text || '';
+    // Récupère le texte du message, même si c'est une entité spéciale (caption, etc.)
+    let text = '';
+    if (ctx.message.text) {
+      text = ctx.message.text;
+    } else if (ctx.message.caption) {
+      text = ctx.message.caption;
+    } else if (ctx.message.entities && ctx.message.entities.length > 0) {
+      // Parfois, le texte est dans une entité (ex: bot mentionné)
+      text = ctx.message.entities.map(e => e.text).join(' ');
+    }
+    // Si toujours rien, log pour debug
+    if (!text) {
+      console.log('Aucun texte détecté dans le message:', ctx.message);
+      return;
+    }
     const now = Date.now();
     rateTimestamps = rateTimestamps.filter(ts => now - ts < RATE_WINDOW);
     if (rateTimestamps.length >= RATE_LIMIT) return;
