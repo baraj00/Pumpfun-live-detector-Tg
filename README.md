@@ -1,4 +1,5 @@
 🎯 Pumpfun Live Detector TG
+Telegram: @detectivelive_bot
 
 🤖 Bot Telegram qui détecte automatiquement les contracts (CA) pump.fun en live dans les messages et fournit instantanément le lien direct vers le live pump.fun correspondant.
 
