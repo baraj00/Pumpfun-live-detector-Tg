@@ -1,11 +1,57 @@
-const { Telegraf } = require('telegraf');
 
-// Récupère le token du bot depuis les variables d'environnement
+const { Telegraf } = require('telegraf');
+const fetch = require('node-fetch');
+const { PublicKey } = require('@solana/web3.js');
+
+const PUMPFUN_TEMPLATE = 'https://pump.fun/coin/{address}';
+const B58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+const base58Regex = new RegExp(`[${B58_ALPHABET}]{32,44}`, 'gi');
+
+// Rate limiter global (max 5 liens/minute)
+const RATE_LIMIT = 5;
+const RATE_WINDOW = 60 * 1000; // 1 min
+let rateTimestamps = [];
+
+function isValidSolanaPubkey(s) {
+  try {
+    new PublicKey(s);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function pumpfunExists(url) {
+  try {
+    const res = await fetch(url, { method: 'HEAD' });
+    return res.status === 200;
+  } catch {
+    return false;
+  }
+}
+
 const bot = new Telegraf(process.env.TELEGRAM_TOKEN);
 
-// Exemple de handler (à adapter selon ton bot)
-bot.on('text', async (ctx) => {
-  await ctx.reply('Bot en ligne sur Vercel !');
+bot.on('message', async (ctx) => {
+  try {
+    const text = ctx.message.text || '';
+    const now = Date.now();
+    rateTimestamps = rateTimestamps.filter(ts => now - ts < RATE_WINDOW);
+    if (rateTimestamps.length >= RATE_LIMIT) return;
+    const m = base58Regex.exec(text);
+    if (!m) return;
+    const mint = m[0];
+    const url = PUMPFUN_TEMPLATE.replace('{address}', mint);
+    const exists = await pumpfunExists(url);
+    rateTimestamps.push(now);
+    if (exists) {
+      await ctx.reply(`🔎 Pump.fun détecté : ${url}`, { reply_to_message_id: ctx.message.message_id });
+    } else {
+      await ctx.reply(`🔎 Lien préparé : ${url}\n(la page n’est pas encore dispo sur pump.fun)`, { reply_to_message_id: ctx.message.message_id });
+    }
+  } catch (err) {
+    console.error(err);
+  }
 });
 
 // Handler Vercel API
