@@ -63,10 +63,16 @@ bot.on('message', async (ctx) => {
     rateTimestamps.push(now);
     if (exists) {
       console.log('DEBUG: réponse pump.fun détecté');
-      await ctx.reply(`🔎 Pump.fun détecté : ${url}`, { reply_to_message_id: ctx.message.message_id });
+      await ctx.reply(
+        `✅ [Voir sur Pump.fun](${url})`,
+        { parse_mode: 'Markdown', reply_to_message_id: ctx.message.message_id }
+      );
     } else {
       console.log('DEBUG: réponse lien préparé');
-      await ctx.reply(`🔎 Lien préparé : ${url}\n(la page n’est pas encore dispo sur pump.fun)`, { reply_to_message_id: ctx.message.message_id });
+      await ctx.reply(
+        `� [Lien pump.fun](${url})\n_(la page n’est pas encore dispo)_`,
+        { parse_mode: 'Markdown', reply_to_message_id: ctx.message.message_id }
+      );
     }
   } catch (err) {
     console.error(err);
