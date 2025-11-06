@@ -27,7 +27,8 @@ let stats = {
   startTime: Date.now()
 };
 
-// User favorites (in-memory, could be replaced with database)
+// User favorites (in-memory - WARNING: Data will be lost on restart!)
+// For production use, replace with a database. See examples/README.md for database integration examples.
 const userFavorites = new Map();
 
 // Validation function
@@ -51,10 +52,12 @@ async function pumpfunExists(url) {
 }
 
 // Example: Fetch token info (pseudo-code, API may not exist)
+// TODO: Replace with actual pump.fun API endpoint when/if available
+// For now, this is a placeholder to demonstrate the concept
 async function getTokenInfo(address) {
   try {
-    // This is a placeholder - pump.fun may not have a public API
-    // Replace with actual API endpoint if available
+    // PLACEHOLDER: This endpoint may not exist
+    // Replace with actual API like DexScreener, Jupiter, or pump.fun API
     const response = await fetch(`https://api.pump.fun/token/${address}`);
     if (response.ok) {
       const data = await response.json();
@@ -193,7 +196,9 @@ bot.on('message', async (ctx) => {
     const text = ctx.message.text || '';
     if (!text) return;
     
-    // Rate limiting
+    // Rate limiting - using simple array filter
+    // NOTE: For high-volume production use, consider a more efficient approach
+    // like a circular buffer or scheduled cleanup instead of filtering on every message
     const now = Date.now();
     rateTimestamps = rateTimestamps.filter(ts => now - ts < RATE_WINDOW);
     if (rateTimestamps.length >= RATE_LIMIT) {
