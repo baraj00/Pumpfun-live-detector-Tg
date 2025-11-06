@@ -51,6 +51,19 @@ Réponse du bot :
 
 🔎 Pump.fun live détecté : https://pump.fun/coin/AiqBsVpd2wjQRXS7rryguk6WAc3Hp4G1M75o6hLf
 
+📚 Documentation Complète
+
+🇫🇷 **[Guide Complet en Français](GUIDE.md)** - Tout ce que vous pouvez faire avec ce bot et comment l'améliorer
+
+🇬🇧 **[Complete Guide in English](GUIDE_EN.md)** - Everything you can do with this bot and how to improve it
+
+Ces guides incluent :
+- ✨ Fonctionnalités actuelles détaillées
+- 🚀 Améliorations possibles (prix, alertes, sécurité, etc.)
+- 📊 Exemples de code pour extensions
+- 🛠️ Configuration avancée
+- 💡 Bonnes pratiques de développement
+
 📜 Licence
 
 📝 MIT License
